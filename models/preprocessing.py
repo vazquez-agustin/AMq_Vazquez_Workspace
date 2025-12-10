@@ -79,7 +79,7 @@ def transformar_features(X_train: pd.DataFrame, X_test: pd.DataFrame):
     cat_cols = combined.select_dtypes(include=['object']).columns.tolist()
     # Aplicar pd.get_dummies
     if len(cat_cols) > 0:
-        combined = pd.get_dummies(combined, columns=cat_cols, drop_first=False)
+        combined = pd.get_dummies(combined, columns=cat_cols, drop_first=True)
     # Separar de nuevo train y test
     X_train_enc = combined.iloc[:len(X_train), :].copy()
     X_test_enc = combined.iloc[len(X_train):, :].copy()

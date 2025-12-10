@@ -2,7 +2,7 @@
 metrics_utils.py - Cálculo de métricas de evaluación y funciones de visualización (matriz de confusión, ROC, calibración).
 """
 import numpy as np
-from sklearn.metrics import confusion_matrix, f1_score, precision_score, recall_score, accuracy_score, brier_score_loss, roc_curve, auc
+from sklearn.metrics import confusion_matrix, f1_score, precision_score, recall_score, accuracy_score, brier_score_loss, roc_curve, auc, roc_auc_score
 import matplotlib.pyplot as plt
 
 def calcular_metricas_basicas(y_true, y_pred, y_prob=None):
@@ -20,6 +20,7 @@ def calcular_metricas_basicas(y_true, y_pred, y_prob=None):
     if y_prob is not None:
         # Brier score: medida de calibración (menor es mejor)
         metrics['brier_score'] = brier_score_loss(y_true, y_prob, pos_label=1)
+        metrics['roc_auc'] = roc_auc_score(y_true, y_prob)
     return metrics
 
 def brier_score(y_true, y_prob):
