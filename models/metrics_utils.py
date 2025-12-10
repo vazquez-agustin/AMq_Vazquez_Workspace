@@ -2,7 +2,7 @@
 metrics_utils.py - Cálculo de métricas de evaluación y funciones de visualización (matriz de confusión, ROC, calibración).
 """
 import numpy as np
-from sklearn.metrics import confusion_matrix, f1_score, precision_score, recall_score, accuracy_score, brier_score_loss, roc_curve, auc, roc_auc_score
+from sklearn.metrics import confusion_matrix, f1_score, precision_score, recall_score, accuracy_score, brier_score_loss, roc_curve, auc, roc_auc_score, precision_recall_curve
 import matplotlib.pyplot as plt
 
 def calcular_metricas_basicas(y_true, y_pred, y_prob=None):
@@ -99,3 +99,15 @@ def plot_calibration_curve(y_true, y_prob, n_bins=10, label=None):
     plt.xlabel('Probabilidad pronosticada')
     plt.ylabel('Fracción de positivos observada')
     # Nota: No llamamos plt.show() aquí para permitir overlay de múltiples curvas en la misma figura.
+
+def plot_precision_recall_curve(y_true, y_prob, label=None):
+    """
+    Traza la curva Precision-Recall para valores verdaderos y probabilidades predichas.
+    Si se proporciona un 'label', se usa como etiqueta en la leyenda.
+    """
+    precision, recall, _ = precision_recall_curve(y_true, y_prob, pos_label=1)
+    plt.plot(recall, precision, label=label if label else 'Modelo')
+    plt.xlabel('Recall')
+    plt.ylabel('Precision')
+    plt.title('Curva Precision-Recall')
+    plt.legend(loc="lower left")
