@@ -73,21 +73,30 @@ def transformar_features(X_train: pd.DataFrame, X_test: pd.DataFrame):
       - Escalado Min-Max a características numéricas.
     Recibe X_train y X_test originales (tras limpieza) y devuelve nuevas versiones transformadas (pandas.DataFrame).
     """
-    # One-hot encoding: concatenamos para aplicar dummies consistentemente en train y test
-    combined = pd.concat([X_train, X_test], axis=0, ignore_index=True)
-    # Identificar columnas categóricas (tipo objeto)
-    cat_cols = combined.select_dtypes(include=['object']).columns.tolist()
-    # Aplicar pd.get_dummies
-    if len(cat_cols) > 0:
-        combined = pd.get_dummies(combined, columns=cat_cols, drop_first=True)
-    # Separar de nuevo train y test
-    X_train_enc = combined.iloc[:len(X_train), :].copy()
-    X_test_enc = combined.iloc[len(X_train):, :].copy()
-    X_test_enc.reset_index(drop=True, inplace=True)
-    
-    # Escalar características numéricas a [0,1]
+
+    # 1) One-hot en TRAIN
+    cat_cols_train = X_train.select_dtypes(include=["object"]).columns.tolist()
+    X_train_enc = pd.get_dummies(X_train, columns=cat_cols_train, drop_first=True)
+
+    # 2) One-hot en TEST (puede generar columnas distintas)
+    cat_cols_test = X_test.select_dtypes(include=["object"]).columns.tolist()
+    X_test_enc = pd.get_dummies(X_test, columns=cat_cols_test, drop_first=True)
+
+    # 3) Alinear columnas: el TEST queda con las columnas del TRAIN
+    X_test_enc = X_test_enc.reindex(columns=X_train_enc.columns, fill_value=0)
+
+    # 4) Escalado MinMax (fit en TRAIN, transform en TEST)
     scaler = MinMaxScaler()
-    X_train_scaled = pd.DataFrame(scaler.fit_transform(X_train_enc), columns=X_train_enc.columns)
-    X_test_scaled = pd.DataFrame(scaler.transform(X_test_enc), columns=X_test_enc.columns)
-    
+    X_train_scaled = pd.DataFrame(
+        scaler.fit_transform(X_train_enc),
+        columns=X_train_enc.columns,
+        index=X_train.index
+    )
+    X_test_scaled = pd.DataFrame(
+        scaler.transform(X_test_enc),
+        columns=X_train_enc.columns,
+        index=X_test.index
+    )
+
     return X_train_scaled, X_test_scaled
+
