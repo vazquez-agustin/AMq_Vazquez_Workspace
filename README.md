@@ -17,8 +17,6 @@ El objetivo del trabajo es predecir la ocurrencia de lluvia al día siguiente en
 
 ---
 
-# 🌧️ Rain Tomorrow Prediction (Australia)
-
 ## 📌 Objetivo
 Predecir la variable binaria `RainTomorrow` (Sí / No) a partir de variables meteorológicas del día actual, priorizando métricas robustas frente al desbalance de clases y probabilidades bien calibradas para toma de decisiones.
 
