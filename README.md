@@ -63,24 +63,6 @@ Predecir la variable binaria `RainTomorrow` (Sí / No) a partir de variables met
 - Brier Score
 - Curvas ROC y Precision–Recall
 
-## 📁 Estructura del Repositorio
-├── dataset/
-│ ├── weatherAUS.csv
-│ └── weatherAUS_preprocessed.csv
-├── models/
-│ ├── preprocessing.py
-│ ├── logistic_regression.py
-│ ├── naive_bayes.py
-│ ├── knn.py
-│ ├── random_forest.py
-│ ├── xgboost.py
-│ ├── metrics_utils.py
-│ └── calibratecopy1.py
-├── notebooks/
-│ └── TP_Integrador_AM1.ipynb
-├── trained_models/ # opcional
-└── README.md
-
 ## ▶️ Ejecución
 1. Clonar el repositorio
 2. Instalar las dependencias
