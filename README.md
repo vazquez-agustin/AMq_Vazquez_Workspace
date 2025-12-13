@@ -1,6 +1,6 @@
 # Repositorio de Aprendizaje de Máquina I
 
-- Profesoras: Facundo Adrián Lucianna & María Carina Roldán
+- Profesores: Facundo Adrián Lucianna & María Carina Roldán
 
 - Estudiantes: 
 	* Paola Andrea Blanco    (a2303)
