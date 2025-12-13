@@ -66,13 +66,22 @@ def limpiar_datos(df: pd.DataFrame) -> pd.DataFrame:
     df_clean.reset_index(drop=True, inplace=True)
     return df_clean
 
-def transformar_features(X_train: pd.DataFrame, X_test: pd.DataFrame):
+def transformar_features(X_train: pd.DataFrame, X_test: pd.DataFrame, y_train: pd.Series) -> (pd.DataFrame, pd.DataFrame):
     """
     Aplica transformaciones a las características:
+      - Target encoding a la variable Location (basado en media de RainTomorrow en TRAIN).
       - One-hot encoding a variables categóricas (dummies).
       - Escalado Min-Max a características numéricas.
     Recibe X_train y X_test originales (tras limpieza) y devuelve nuevas versiones transformadas (pandas.DataFrame).
     """
+    # 0) Target encoding sobre Location (basado en media de RainTomorrow en TRAIN)
+    if 'Location' in X_train.columns:
+        location_target_mean = X_train.join(y_train)['RainTomorrow'].groupby(X_train['Location']).mean()
+        X_train['Location'] = X_train['Location'].map(location_target_mean)
+        X_test['Location'] = X_test['Location'].map(location_target_mean)
+        # Rellenar posibles nulos en TEST (locations no vistas en TRAIN) con la media global
+        global_mean = y_train.mean()
+        X_test['Location'] = X_test['Location'].fillna(global_mean)
 
     # 1) One-hot en TRAIN
     cat_cols_train = X_train.select_dtypes(include=["object"]).columns.tolist()
