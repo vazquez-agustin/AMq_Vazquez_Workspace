@@ -111,3 +111,14 @@ def plot_precision_recall_curve(y_true, y_prob, label=None):
     plt.ylabel('Precision')
     plt.title('Curva Precision-Recall')
     plt.legend(loc="lower left")
+
+def calcular_roc_curve(y_true, y_prob):
+    """
+    Calcula la curva ROC.
+    Devuelve:
+    - fpr: False Positive Rate
+    - tpr: True Positive Rate
+    - thresholds
+    """
+    fpr, tpr, thresholds = roc_curve(y_true, y_prob)
+    return fpr, tpr, thresholds
